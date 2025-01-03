@@ -151,7 +151,7 @@ Resources:
         - IpProtocol: tcp
           FromPort: 3306
           ToPort: 3306
-          SourceSecurityGroupId: !Ref WebServerSG
+          SourceSecurityGroupId: !GetAtt WebServerSG.GroupId
 
   # Web Server Instance
   WebServerInstance:
