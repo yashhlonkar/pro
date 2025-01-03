@@ -1,0 +1,18 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.8
+  build:
+    commands:
+      - echo "Validating CloudFormation template..."
+      - aws cloudformation validate-template --template-body file://template.yaml
+  post_build:
+    commands:
+      - echo "Deploying CloudFormation stack..."
+      - aws cloudformation deploy --template-file template.yaml --stack-name TwoTierStack --capabilities CAPABILITY_NAMED_IAM
+
+artifacts:
+  files:
+    - template.yaml
