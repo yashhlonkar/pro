@@ -7,11 +7,19 @@ phases:
   build:
     commands:
       - echo "Validating CloudFormation template..."
-      - aws cloudformation validate-template --template-body file://template.yaml
+      - |
+        if ! aws cloudformation validate-template --template-body file://template.yaml; then
+          echo "Template validation failed. Exiting..."
+          exit 1
+        fi
   post_build:
     commands:
       - echo "Deploying CloudFormation stack..."
-      - aws cloudformation deploy --template-file template.yaml --stack-name TwoTierStack --capabilities CAPABILITY_NAMED_IAM
+      - |
+        if ! aws cloudformation deploy --template-file template.yaml --stack-name TwoTierStack --capabilities CAPABILITY_NAMED_IAM --region us-east-1; then
+          echo "Stack deployment failed. Exiting..."
+          exit 1
+        fi
 
 artifacts:
   files:
